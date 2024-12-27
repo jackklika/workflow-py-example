@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "py-ulid>=1.0.3",
     "pytest>=8.3.4",
     "pytest-asyncio>=0.25.0",
     "temporalio>=1.9.0",

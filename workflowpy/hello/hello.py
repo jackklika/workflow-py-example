@@ -19,7 +19,7 @@ async def compose_greeting(input: ComposeGreetingInput) -> str:
 
 @dataclass
 class SleepActivityInput:
-    sleep_time_s: int
+    sleep_time_s: float
 
 
 @activity.defn
@@ -45,13 +45,13 @@ class GreetingWorkflow:
 
 @dataclass
 class SleepExampleWorkflowInput:
-    sleep_time_s: int
+    sleep_time_s: float
     sleep_quantity: int
 
 
 @dataclass
 class SleepExampleWorkflowOutput:
-    total_sleep_time_s: int  # how long it should have slept for
+    total_sleep_time_s: float  # how long it should have slept for
 
 
 @workflow.defn
@@ -59,9 +59,17 @@ class SleepExampleWorkflow:
     def __init__(self):
         self._current_iteration = 0
 
-    @workflow.query(name="current_iteration")
+    @workflow.query(name="CurrentIteration")
     def get_current_iteration(self) -> int:
         return self._current_iteration
+
+    @workflow.query(name="CurrentDetails")
+    def get_current_details(self) -> str:
+        return workflow.get_current_details()
+
+    @workflow.query(name="Foo")
+    def get_foo_query(self) -> str:
+        return "bar"
 
     @workflow.run
     async def run(self, input: SleepExampleWorkflowInput) -> SleepExampleWorkflowOutput:
@@ -74,8 +82,10 @@ class SleepExampleWorkflow:
             )
             await workflow.execute_activity(
                 sleep_activity,
-                input,
-                start_to_close_timeout=timedelta(seconds=10),
+                SleepActivityInput(
+                    sleep_time_s=input.sleep_time_s,
+                ),
+                start_to_close_timeout=timedelta(seconds=1200),
             )
         return SleepExampleWorkflowOutput(
             total_sleep_time_s=input.sleep_time_s * input.sleep_quantity
