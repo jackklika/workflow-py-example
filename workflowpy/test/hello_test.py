@@ -57,7 +57,7 @@ class TestSleepExampleWorkflow:
                     task_queue=task_queue_name,
                 )
 
-                assert 1 == await handle.query("current_iteration")
+                assert 1 == await handle.query("CurrentIteration")
                 await env.sleep(_input.sleep_time_s + 0.1)
                 assert 2 == await handle.query(
                     SleepExampleWorkflow.get_current_iteration

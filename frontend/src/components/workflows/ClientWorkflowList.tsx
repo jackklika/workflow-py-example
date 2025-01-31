@@ -21,6 +21,8 @@ export default function ClientWorkflowList({
   initialWorkflows: WorkflowExecution[]
 }) {
   const [workflows] = useState(initialWorkflows);
+  console.log(workflows)
+  console.log(workflows.map((workflow) => workflow.runId))
 
   const handleQuery = async (workflowId: string) => {
     try {
@@ -35,12 +37,12 @@ export default function ClientWorkflowList({
     <div className="space-y-4">
       {workflows.map((workflow) => (
         <div
-          key={workflow.execution.workflowId}
+          key={workflow.execution?.workflowId}
           className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow"
         >
           <h2 className="text-xl font-semibold">{workflow.type.name}</h2>
           <p className="text-sm text-gray-600">
-            ID: {workflow.execution.workflowId}
+            ID: {workflow.execution?.workflowId}
           </p>
           <p className="text-sm text-gray-600">
             Status: {workflow.status}
@@ -53,6 +55,7 @@ export default function ClientWorkflowList({
             className="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
           >
             Query State
+
           </button>
         </div>
       ))}

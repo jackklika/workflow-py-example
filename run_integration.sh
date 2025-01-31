@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e  # Exit on error
 
-# Function to check if Temporal server is ready
+# Check if Temporal server is ready
 check_temporal() {
     temporal operator cluster health 2>/dev/null | grep -q "SERVING"
     return $?

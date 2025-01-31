@@ -4,6 +4,8 @@ from datetime import timedelta
 
 from temporalio import activity, workflow
 
+from workflowpy.hello.base import BaseWorkflow
+
 
 @dataclass
 class ComposeGreetingInput:
@@ -55,8 +57,9 @@ class SleepExampleWorkflowOutput:
 
 
 @workflow.defn
-class SleepExampleWorkflow:
+class SleepExampleWorkflow(BaseWorkflow):
     def __init__(self):
+        super().__init__()
         self._current_iteration = 0
 
     @workflow.query(name="CurrentIteration")
@@ -78,6 +81,9 @@ class SleepExampleWorkflow:
             self._current_iteration = i + 1
             workflow.logger.info("Running iteration %s" % i)
             workflow.set_current_details(
+                f"sleep number {i}, will sleep for {input.sleep_time_s} seconds"
+            )
+            self.append_log(
                 f"sleep number {i}, will sleep for {input.sleep_time_s} seconds"
             )
             await workflow.execute_activity(

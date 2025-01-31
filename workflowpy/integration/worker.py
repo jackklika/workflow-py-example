@@ -8,6 +8,7 @@ from workflowpy.hello.hello import SleepExampleWorkflow, sleep_activity
 
 logger = logging.getLogger(__name__)
 
+
 async def run_worker():
     # Setup shutdown event
     shutdown = asyncio.Event()
@@ -39,9 +40,11 @@ async def run_worker():
         logger.info("Shutting down worker...")
         await worker.shutdown()
 
+
 def start_worker():
     logging.basicConfig(level=logging.INFO)
     asyncio.run(run_worker())
+
 
 if __name__ == "__main__":
     start_worker()
